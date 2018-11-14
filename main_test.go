@@ -1,12 +1,32 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"os"
 	"testing"
 )
 
+var dirTest = "./test_data/"
 var c = Contact{"79153423434", "Vasya", "Tupichkin"}
+
+func CreateTestEnvironment() {
+	if err := os.Mkdir(dirTest, 0777); err != nil {
+		fmt.Println("Ended with error", err)
+		os.Exit(2)
+	}
+}
+
+func DeleteTestEnvironment() {
+	if err := os.Remove(dirTest); err != nil {
+		fmt.Println("Ended with error", err)
+		os.Exit(2)
+	}
+}
+func TestMain(m *testing.M) {
+	CreateTestEnvironment()
+	defer DeleteTestEnvironment()
+}
 
 func TestToString(t *testing.T) {
 	v := c.toString()
@@ -19,8 +39,6 @@ func TestToString(t *testing.T) {
 		)
 	}
 }
-
-var dirTest = "./test_data/"
 
 func TestCreate(t *testing.T) {
 	c.create(dirTest)
